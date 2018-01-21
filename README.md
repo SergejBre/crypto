@@ -1,5 +1,5 @@
-![PROJECT_PHOTO](https://github.com/SergejBre/crypto/blob/master/doc/images/program_screenshot.png)
 # Crypto - Advanced File Encryptor, based on one simple XOR and on a reliable AES encryption method
+![PROJECT_PHOTO](https://github.com/SergejBre/crypto/blob/master/doc/images/program_screenshot.png)
 * [Description of the Project](#chapter-0)
 * [Project folders](#chapter-1)
 * [Main features](#chapter-2)
