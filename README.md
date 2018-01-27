@@ -31,6 +31,7 @@ TODO
 
 <a id="chapter-5"></a>
 ## Compilation and installation
+Here is a link to the installation program for the Win XP/7/8/10 [crypto-setup.zip](https://yadi.sk/d/pHzw_xxQ3RqRo7)
 TODO
 
 <a id="chapter-6"></a>
