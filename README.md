@@ -31,8 +31,7 @@ TODO
 
 <a id="chapter-5"></a>
 ## Compilation and installation
-Here is a link to the installation program for the Win XP/7/8/10 [crypto-setup.zip](https://yadi.sk/d/pHzw_xxQ3RqRo7)
-TODO
+Here is a link to the installation program for Windows XP, Vista, 7, 8, 8.1 [crypto-setup.zip](https://github.com/SergejBre/crypto/releases/download/1.0.1.0/crypto-setup.zip)
 
 <a id="chapter-6"></a>
 ## Further development
