@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Program settings</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="crypto.qrc">
+    <normaloff>:/images/settings.png</normaloff>:/images/settings.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -107,7 +111,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="crypto.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
