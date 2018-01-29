@@ -453,7 +453,7 @@
   <action name="actionSettings">
    <property name="icon">
     <iconset resource="crypto.qrc">
-     <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
+     <normaloff>:/images/settings.png</normaloff>:/images/settings.png</iconset>
    </property>
    <property name="text">
     <string>Preferences</string>

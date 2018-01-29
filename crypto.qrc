@@ -14,5 +14,6 @@
         <file>images/font.png</file>
         <file>images/error.png</file>
         <file>images/icon.png</file>
+        <file>images/settings.png</file>
     </qresource>
 </RCC>
