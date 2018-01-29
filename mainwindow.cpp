@@ -188,7 +188,8 @@ void MainWindow::readSettings( void )
     settings.beginGroup("Font");
     QFont font;
     font.fromString(settings.value("font", QFont()).toString());
-    this->setFont(font);
+//    this->setFont(font);
+    qApp->setFont(font);
     settings.endGroup();
 
     settings.beginGroup("ULayot");
@@ -954,13 +955,13 @@ void MainWindow::on_passConfirmLine_textChanged( const QString &arg )
 {
     if( ui->passLine->text().compare( arg, Qt::CaseSensitive ) == 0 )
     {
-        ui->passLine->setStyleSheet("lineedit-password-character: 9679; color: green");
-        ui->passConfirmLine->setStyleSheet("lineedit-password-character: 9679; color: green");
+        ui->passLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: green;}");
+        ui->passConfirmLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: green;}");
     }
     else
     {
-        ui->passLine->setStyleSheet("lineedit-password-character: 9679; color: black");
-        ui->passConfirmLine->setStyleSheet("lineedit-password-character: 9679; color: red");
+        ui->passLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: black;}");
+        ui->passConfirmLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: red;}");
     }
 }
 
@@ -972,13 +973,13 @@ void MainWindow::on_passLine_textChanged( const QString &arg )
 {
     if( ui->passConfirmLine->text().compare( arg, Qt::CaseSensitive ) == 0 )
     {
-        ui->passLine->setStyleSheet("lineedit-password-character: 9679; color: green");
-        ui->passConfirmLine->setStyleSheet("lineedit-password-character: 9679; color: green");
+        ui->passLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: green;}");
+        ui->passConfirmLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: green;}");
     }
     else
     {
-        ui->passLine->setStyleSheet("lineedit-password-character: 9679; color: black");
-        ui->passConfirmLine->setStyleSheet("lineedit-password-character: 9679; color: red");
+        ui->passLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: black;}");
+        ui->passConfirmLine->setStyleSheet("QLineEdit{lineedit-password-character: 9679; color: red;}");
     }
 }
 
@@ -1046,10 +1047,11 @@ void MainWindow::on_recurseDirs_clicked( void )
 void MainWindow::on_actionFont_triggered( void )
 {
     bool selected;
-    QFont font = QFontDialog::getFont( &selected, this->font(), this );
+    QFont font = QFontDialog::getFont( &selected, qApp->font(), this );
 
     if ( selected )
     {
-        this->setFont( font );
+//        this->setFont( font );
+        qApp->setFont( font );
     }
 }

@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     app.setOrganizationDomain( "free.project.org" );
     app.setApplicationName( "Crypto" );
     app.setApplicationDisplayName( "Crypto - Advanced File Encryptor." );
-    app.setApplicationVersion( "1.0.1, built on: " + QString(__DATE__).simplified() );
+    app.setApplicationVersion( "1.0.1.0, built on: " + QString(__DATE__).simplified() );
 
     MainWindow w;
     w.show();

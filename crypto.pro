@@ -51,7 +51,7 @@ FORMS    += mainwindow.ui \
 
 RESOURCES = crypto.qrc
 win32 {
-VERSION = 1.0.1
+VERSION = 1.0.1.0
 QMAKE_TARGET_COMPANY = Free Project
 QMAKE_TARGET_PRODUCT = Crypto
 QMAKE_TARGET_DESCRIPTION = Advanced File Encryptor
