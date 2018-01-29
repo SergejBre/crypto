@@ -558,7 +558,6 @@ ProcessStatus MainWindow::fileProcessing( const QString &f )
  */
 void MainWindow::execute( void )
 {
-    //TODO
     if ( ui->passLine->text().isEmpty() )
     {
         QMessageBox::critical( this, QObject::tr("Error"), QObject::tr("Password not entered!") );
@@ -569,7 +568,7 @@ void MainWindow::execute( void )
         QMessageBox::critical( this, QObject::tr("Error"), QObject::tr("No password confirmation entered!") );
         return;
     }
-    if ( ui->passLine->text() != ui->passConfirmLine->text() )
+    if ( ui->passLine->text().compare( ui->passConfirmLine->text(), Qt::CaseSensitive ) != 0 )
     {
         QMessageBox::critical( this, QObject::tr("Error"), QObject::tr("Passwords do not match!") );
         return;
