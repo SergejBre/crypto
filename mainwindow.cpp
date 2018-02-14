@@ -808,7 +808,8 @@ void MainWindow::about( void )
                                    "<b>Advanced File Encryptor</b>, based on simple XOR and reliable AES methods.<br />"
                                    "The Advanced Encryption Standard (AES) is a specification for the encryption of electronic data established by the U.S. National Institute of Standards and Technology (NIST).<br />"
                                    "Certification AES by: CRYPTREC, NESSIE, NSA.<br /><b>Version</b> %1<br /><b>Copyright</b> © 2018 sergej1@email.ua<br /><br />"
-                                   "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.").arg(qApp->applicationVersion()));
+                                   "The program is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.<br /><br />"
+                                   "This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit. (<a href=\"http://www.openssl.org/\">http://www.openssl.org/</a>)").arg(qApp->applicationVersion()));
 }
 
 /**
