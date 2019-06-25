@@ -8,6 +8,14 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @brief main.cpp file
+ * @details
+ *  The main.cpp file runs an instance of a GUI Qt application app, sets it up with
+ *  the specified special parameters, and installs a Qt message handler defined in the
+ *  logMessageOutput function. In addition, a log journal of the application messages
+ *  is initialized.
+ */
 
 //------------------------------------------------------------------------------
 // Includes
@@ -34,10 +42,21 @@ static QScopedPointer<QFile> m_logFile;
 void logMessageOutput( const QtMsgType type, const QMessageLogContext &context, const QString &msg );
 
 /**
- * @brief main
- * @param argc
- * @param argv
- * @return
+ * @brief main function
+ * @details In this function, an instance of a GUI Qt application app is executed and
+ * set up with the parameters entered.
+ *
+ * @param argc this parameter is ignored because it is a GUI application.
+ * @param argv this parameter is ignored because it is a GUI application.
+ *
+ * @return value of the function QApplication::exec()
+ * Enters the main event loop and waits until exit() is called.
+ * Returns the value that was set to exit() (which is 0 if exit() is called
+ * via quit()).
+ *
+ * @note
+ * The program parameters (argc, argv) are ignored.
+ * @warning
  */
 int main(int argc, char *argv[])
 {
@@ -86,10 +105,35 @@ int main(int argc, char *argv[])
 }
 
 /**
- * @brief logMessageOutput
+ * @brief
+ * The function logMessageOutput is a message handler.
+ * This function redirects the messages by their category (QtDebugMsg,
+ * QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg) to the log file (m_logFile).
+ *
+ * @details
+ * The message handler is a function that prints out debug messages,
+ * warnings, critical and fatal error messages. The Qt library (debug mode)
+ * contains hundreds of warning messages that are printed when internal errors
+ * (usually invalid function arguments) occur. Qt built in release mode
+ * also contains such warnings unless QT_NO_WARNING_OUTPUT and/
+ * or QT_NO_DEBUG_OUTPUT have been set during compilation.
+ * If you implement your own message handler, you get total control of these messages.
+ *
  * @param[in] type of the type QtMsgType
  * @param[in] context of type QMessageLogContext
  * @param[in] msg of the type QString
+ *
+ * @note
+ * - The output of messages is also output to the terminal console. This is for debugging purposes.
+ * - Additional information, such as a line of code, the name of the source file, function names
+ * cannot be displayed for the release of the program.
+ *
+ * @warning
+ * - The default message handler prints the message to the standard output
+ * under X11 or to the debugger under Windows. If it is a fatal message,
+ * the application aborts immediately.
+ * - Only one message handler can be defined, since this is usually done on
+ * an application-wide basis to control debug output.
  */
 void logMessageOutput( const QtMsgType type, const QMessageLogContext &context, const QString &msg )
 {
@@ -116,11 +160,11 @@ void logMessageOutput( const QtMsgType type, const QMessageLogContext &context, 
         out << "FTL ";
         break;
     default :
-        out << "??? ";
+        out << "ERR ";
     }
 #ifdef DEBUG_OUTPUT
     out << context.category << ": " << msg << " (" << context.file << ":" << context.line << ", " << context.function << ")" << "<br />" << endl;
-#else
+#else // only for release
     out << context.category << ": " << msg << "<br />" << endl;
 #endif
     out.flush();
