@@ -9,12 +9,22 @@
 //           reliable AES methods
 //------------------------------------------------------------------------------
 /**
- * @brief main.cpp file
- * @details
- *  The main.cpp file runs an instance of a GUI Qt application app, sets it up with
- *  the specified special parameters, and installs a Qt message handler defined in the
- *  logMessageOutput function. In addition, a log journal of the application messages
- *  is initialized.
+* @mainpage Data encryption program Crypto.
+*
+* Crypto - Advanced File Encryptor, based on simple XOR and reliable AES methods
+*
+* @author SergejBre sergej1@email.ua
+*/
+
+/**
+ * @file main.cpp
+ *
+ * @brief The file contains two important functions, main and logMessageOutput.
+ *
+ *  The main function executes an instance of a GUI Qt application,
+ *  sets it up with the specified special parameters, and installs
+ *  a Qt message handler defined in the logMessageOutput function.
+ *  In addition, a log journal of the application messages is set up.
  */
 
 //------------------------------------------------------------------------------
@@ -43,7 +53,8 @@ void logMessageOutput( const QtMsgType type, const QMessageLogContext &context, 
 
 /**
  * @brief main function
- * @details In this function, an instance of a GUI Qt application app is executed and
+ *
+ * In this function, an instance of a GUI Qt application app is executed and
  * set up with the parameters entered.
  *
  * @param argc this parameter is ignored because it is a GUI application.
@@ -57,6 +68,7 @@ void logMessageOutput( const QtMsgType type, const QMessageLogContext &context, 
  * @note
  * The program parameters (argc, argv) are ignored.
  * @warning
+ * none
  */
 int main(int argc, char *argv[])
 {
@@ -105,12 +117,10 @@ int main(int argc, char *argv[])
 }
 
 /**
- * @brief
- * The function logMessageOutput is a message handler.
+ * @brief The function logMessageOutput is a message handler.
+ *
  * This function redirects the messages by their category (QtDebugMsg,
  * QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg) to the log file (m_logFile).
- *
- * @details
  * The message handler is a function that prints out debug messages,
  * warnings, critical and fatal error messages. The Qt library (debug mode)
  * contains hundreds of warning messages that are printed when internal errors
