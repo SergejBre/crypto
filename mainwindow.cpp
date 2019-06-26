@@ -852,7 +852,7 @@ void MainWindow::about( void )
 }
 
 /**
- * @brief MainWindow::on_actionQuit_triggered
+ * @brief Slot to exit the program.
  */
 void MainWindow::on_actionQuit_triggered( void )
 {
@@ -860,7 +860,7 @@ void MainWindow::on_actionQuit_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_actionAdd_file_s_triggered
+ * @brief Slot for adding the new files to the list.
  */
 void MainWindow::on_actionAdd_file_s_triggered( void )
 {
@@ -868,7 +868,7 @@ void MainWindow::on_actionAdd_file_s_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_actionAdd_Directory_triggered
+ * @brief Slot for adding a new directory to the list.
  */
 void MainWindow::on_actionAdd_Directory_triggered( void )
 {
@@ -876,7 +876,7 @@ void MainWindow::on_actionAdd_Directory_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_actionEncryption_triggered
+ * @brief Slot for data encryption procedure.
  */
 void MainWindow::on_actionEncryption_triggered( void )
 {
@@ -884,7 +884,7 @@ void MainWindow::on_actionEncryption_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_actionAbout_Qt_triggered
+ * @brief A slot for issuing information about the Qt-Framework used.
  */
 void MainWindow::on_actionAbout_Qt_triggered( void )
 {
@@ -892,7 +892,7 @@ void MainWindow::on_actionAbout_Qt_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_actionAbout_crypto_triggered
+ * @brief Slot for displaying information about the program.
  */
 void MainWindow::on_actionAbout_crypto_triggered( void )
 {
@@ -900,7 +900,7 @@ void MainWindow::on_actionAbout_crypto_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_actionSettings_triggered
+ * @brief Slot for updating user interface parameters.
  */
 void MainWindow::on_actionSettings_triggered( void )
 {
@@ -909,7 +909,7 @@ void MainWindow::on_actionSettings_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_addFile_clicked
+ * @brief Slot for adding a new file to the list.
  */
 void MainWindow::on_addFile_clicked( void )
 {
@@ -917,7 +917,7 @@ void MainWindow::on_addFile_clicked( void )
 }
 
 /**
- * @brief MainWindow::on_addDir_clicked
+ * @brief Slot for adding a new directory to the list.
  */
 void MainWindow::on_addDir_clicked( void )
 {
@@ -925,7 +925,7 @@ void MainWindow::on_addDir_clicked( void )
 }
 
 /**
- * @brief MainWindow::on_execButton_clicked
+ * @brief Slot for data encryption procedure.
  */
 void MainWindow::on_execButton_clicked( void )
 {
@@ -933,7 +933,7 @@ void MainWindow::on_execButton_clicked( void )
 }
 
 /**
- * @brief MainWindow::on_editEntry_clicked
+ * @brief Slot for editing an item from the list.
  */
 void MainWindow::on_editEntry_clicked( void )
 {
@@ -941,7 +941,7 @@ void MainWindow::on_editEntry_clicked( void )
 }
 
 /**
- * @brief MainWindow::on_deleteEntry_clicked
+ * @brief Slot to remove an item from the list.
  */
 void MainWindow::on_deleteEntry_clicked( void )
 {
@@ -949,7 +949,7 @@ void MainWindow::on_deleteEntry_clicked( void )
 }
 
 /**
- * @brief MainWindow::on_actionContents_triggered
+ * @brief Slot for calling assistance to the user of the program.
  */
 void MainWindow::on_actionContents_triggered( void )
 {
@@ -958,7 +958,7 @@ void MainWindow::on_actionContents_triggered( void )
 }
 
 /**
- * @brief MainWindow::on_targetsList_currentCellChanged
+ * @brief Slot for changing the current cell from the list.
  */
 void MainWindow::on_targetsList_currentCellChanged(int, int, int, int )
 {
@@ -969,8 +969,11 @@ void MainWindow::on_targetsList_currentCellChanged(int, int, int, int )
 }
 
 /**
- * @brief MainWindow::on_hidPassMode_clicked
- * @param checked
+ * @brief Slot for changing the password entry format.
+ *
+ * Slot switch to hidden mode for the Password.
+ *
+ * @param checked of type bool
  */
 void MainWindow::on_hidPassMode_clicked( bool checked )
 {
@@ -987,8 +990,9 @@ void MainWindow::on_hidPassMode_clicked( bool checked )
 }
 
 /**
- * @brief MainWindow::on_passConfirmLine_textChanged
- * @param arg
+ * @brief Slot for compare between passwordLine and confirmLine.
+ *
+ * @param arg of type QString&
  */
 void MainWindow::on_passConfirmLine_textChanged( const QString &arg )
 {
@@ -1005,8 +1009,9 @@ void MainWindow::on_passConfirmLine_textChanged( const QString &arg )
 }
 
 /**
- * @brief MainWindow::on_passLine_textChanged
- * @param arg
+ * @brief Slot for compare between passwordLine and confirmLine.
+ *
+ * @param arg of type QString&
  */
 void MainWindow::on_passLine_textChanged( const QString &arg )
 {
@@ -1023,7 +1028,7 @@ void MainWindow::on_passLine_textChanged( const QString &arg )
 }
 
 /**
- * @brief MainWindow::on_clearList_clicked
+ * @brief Slot to clear the entire list in one click.
  */
 void MainWindow::on_clearList_clicked( void )
 {
@@ -1040,7 +1045,9 @@ void MainWindow::on_clearList_clicked( void )
 }
 
 /**
- * @brief MainWindow::clearList
+ * @brief The function to clear the file list.
+ *
+ * @warning The function uses a recursive call!
  */
 void MainWindow::clearList( void ) const
 {
@@ -1053,7 +1060,9 @@ void MainWindow::clearList( void ) const
 }
 
 /**
- * @brief MainWindow::on_recurseDirs_clicked
+ * @brief Slot for calculate the size of the data in the directory.
+ *
+ * Process all subdirectories recursively.
  */
 void MainWindow::on_recurseDirs_clicked( void )
 {
@@ -1081,7 +1090,11 @@ void MainWindow::on_recurseDirs_clicked( void )
 }
 
 /**
- * @brief MainWindow::on_actionFont_triggered
+ * @brief Slot for the font selection dialog.
+ *
+ * Selection of the screen font.
+ *
+ * @warning The font is installed immediately for the entire program, i.e. for all graphic forms!
  */
 void MainWindow::on_actionFont_triggered( void )
 {
