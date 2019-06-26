@@ -8,6 +8,11 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @file mainwindow.h
+ *
+ * @brief This file contains the declaration of the class MainWindow.
+ */
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -15,21 +20,6 @@
 // Includes
 //------------------------------------------------------------------------------
 #include <QMainWindow>
-
-//------------------------------------------------------------------------------
-// Types
-//------------------------------------------------------------------------------
-typedef enum
-{
-    //! Execution has been successful.
-    PROCESS_STATUS_SUCCESS,
-    //! Provided file path(s) are invalid.
-    PROCESS_STATUS_CONTINUE,
-    //! I/O Error or not enough storage space.
-    PROCESS_STATUS_BREAK,
-    //! Bad allocation memory, etc.
-    PROCESS_STATUS_STATE_ERROR
-} ProcessStatus;
 
 class QLabel;
 class QHeaderView;
@@ -43,14 +33,39 @@ class SettingsDialog;
 class CryptFileDevice;
 
 /**
- * @brief The MainWindow class
+ * @class MainWindow
+ *
+ * @brief The MainWindow class is a back-end user interface.
+ *
+ *  The MainWindow class provides the user with a number of Back-End functions
+ *  that handle user events and reactions to these events.
  */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    enum DataType { File, Dir };
+    //! The ProcessStatus type is used to handle errors that occur during encryption and data processing.
+    typedef enum
+    {
+        //! Execution has been successful.
+        PROCESS_STATUS_SUCCESS,
+        //! Provided file path(s) are invalid.
+        PROCESS_STATUS_CONTINUE,
+        //! I/O Error or not enough storage space.
+        PROCESS_STATUS_BREAK,
+        //! Bad allocation memory, etc.
+        PROCESS_STATUS_STATE_ERROR
+    } ProcessStatus;
+
+    //! The DataType type is used to distinguish data types in user selection dialogs.
+    enum DataType
+    {
+        //! The data type is single file.
+        File,
+        //! The data type is a directory.
+        Dir
+    };
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();

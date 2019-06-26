@@ -466,7 +466,7 @@ void MainWindow::addDirs( void )
  * @param f
  * @return
  */
-ProcessStatus MainWindow::fileProcessing( const QString &f )
+MainWindow::ProcessStatus MainWindow::fileProcessing( const QString &f )
 {
     QFile file(f);
     if ( !file.open( QIODevice::ReadOnly ) )
