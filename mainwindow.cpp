@@ -8,6 +8,11 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @file mainwindow.cpp
+ *
+ * @brief This file contains the definition of methods and interfaces of the MainWindow class.
+ */
 
 //------------------------------------------------------------------------------
 // Includes
@@ -32,8 +37,11 @@ Q_LOGGING_CATEGORY(logMainWindow, "MainWin")
 #define ONEKB 1024
 
 /**
- * @brief MainWindow::MainWindow
- * @param parent
+ * @brief The constructor of the class MainWindow.
+ *
+ * Sets default user interface parameters or uses saved values as parameters.
+ *
+ * @param parent of the type QWidget*, optional parameter.
  */
 MainWindow::MainWindow( QWidget *parent ) :
     QMainWindow( parent ),
@@ -106,7 +114,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 }
 
 /**
- * @brief MainWindow::~MainWindow
+ * @brief The destructor of the class MainWindow.
  */
 MainWindow::~MainWindow()
 {
@@ -114,8 +122,8 @@ MainWindow::~MainWindow()
 }
 
 /**
- * @brief MainWindow::getSettings
- * @return
+ * @brief get-function for the settings
+ * @return currentSettings of the type Settings*
  */
 Settings *MainWindow::getSettings() const
 {
@@ -123,8 +131,8 @@ Settings *MainWindow::getSettings() const
 }
 
 /**
- * @brief MainWindow::wErrorMessage
- * @param message
+ * @brief Critical error message in a separate window.
+ * @param message of the type QString, error message.
  */
 void MainWindow::wErrorMessage(const QVariant &message)
 {
@@ -133,8 +141,11 @@ void MainWindow::wErrorMessage(const QVariant &message)
 }
 
 /**
- * @brief MainWindow::closeEvent
- * @param event
+ * @brief Handle program completion event.
+ *
+ * Before exiting the program, the user interface parameters are automatically saved.
+ *
+ * @param event of type QCloseEvent*
  */
 void MainWindow::closeEvent( QCloseEvent *event )
 {
@@ -143,9 +154,11 @@ void MainWindow::closeEvent( QCloseEvent *event )
 }
 
 /**
- * @brief MainWindow::getDirFiles
- * @param dirPath
- * @return
+ * @brief The function reads the list of files of a given directory and all files of its subdirectories.
+ *
+ * @param dirPath of the type QString&
+ *
+ * @return fileNames of the type QStringList a list of the files
  */
 QStringList MainWindow::getDirFiles( const QString &dirPath ) const
 {
@@ -173,7 +186,13 @@ QStringList MainWindow::getDirFiles( const QString &dirPath ) const
 }
 
 /**
- * @brief MainWindow::readSettings
+ * @brief The function reads the parameters necessary for the user interface that were saved in the previous session.
+ *
+ * Such important parameters will be read as
+ * - the position of the window on the screen and window size,
+ * - interface font and its size,
+ * - the user interface settings (overwrite of the data, recurse of dir's, etc.)
+ * - error and event logging options.
  */
 void MainWindow::readSettings( void )
 {
@@ -219,7 +238,13 @@ void MainWindow::readSettings( void )
 }
 
 /**
- * @brief MainWindow::writeSettings
+ * @brief The function saves the user interface parameters that have been changed by the user in the current session.
+ *
+ * Such parameters will be updated as
+ * - the position of the window on the screen and window size,
+ * - interface font and its size,
+ * - the user interface settings (overwrite of the data, recurse of dir's, etc.)
+ * - error and event logging options.
  */
 void MainWindow::writeSettings( void ) const
 {
@@ -250,10 +275,11 @@ void MainWindow::writeSettings( void ) const
 }
 
 /**
- * @brief MainWindow::getSize
- * @param obj
- * @param type
- * @return
+ * @brief The function solves the total size of the data selected for encryption.
+ *
+ * @param obj of the type QString&, path to the data
+ * @param type of the type enum DataType {File, Dir}
+ * @return size of the type qint64, the size of the data.
  */
 qint64 MainWindow::getSize( const QString &obj, DataType type ) const
 {
@@ -289,9 +315,9 @@ qint64 MainWindow::getSize( const QString &obj, DataType type ) const
 }
 
 /**
- * @brief MainWindow::getTextSize
- * @param size
- * @return
+ * @brief The function converts data size to text format (bytes/Kb/Mb/Gb)
+ * @param size of the type qint64, the size of the data
+ * @return string, as the text.
  */
 QString MainWindow::getTextSize( const qint64 size ) const
 {
@@ -315,8 +341,9 @@ QString MainWindow::getTextSize( const qint64 size ) const
 }
 
 /**
- * @brief MainWindow::getCount
- * @return
+ * @brief The function return value is the number of data list items(files).
+ *
+ * @return number of data list files
  */
 qint64 MainWindow::getCount( void ) const
 {
@@ -350,7 +377,7 @@ qint64 MainWindow::getCount( void ) const
 }
 
 /**
- * @brief MainWindow::updateStatusBar
+ * @brief The function displays on the status bar of the main window the number of list items and their total size.
  */
 void MainWindow::updateStatusBar( void ) const
 {
@@ -358,7 +385,7 @@ void MainWindow::updateStatusBar( void ) const
 }
 
 /**
- * @brief MainWindow::addFiles
+ * @brief The function adds the selected file to the list of items.
  */
 void MainWindow::addFiles( void )
 {
@@ -410,7 +437,7 @@ void MainWindow::addFiles( void )
 }
 
 /**
- * @brief MainWindow::addDirs
+ * @brief The function adds the selected file directory to the list of items.
  */
 void MainWindow::addDirs( void )
 {
@@ -462,9 +489,9 @@ void MainWindow::addDirs( void )
 }
 
 /**
- * @brief MainWindow::fileProcessing
- * @param f
- * @return
+ * @brief The function encrypts / decrypts data.
+ * @param f of the type QString&, path to the file.
+ * @return status of the coding/encoding process.
  */
 MainWindow::ProcessStatus MainWindow::fileProcessing( const QString &f )
 {
@@ -484,7 +511,7 @@ MainWindow::ProcessStatus MainWindow::fileProcessing( const QString &f )
         return PROCESS_STATUS_CONTINUE;
     }
 
-    // TODO
+    //! \todo Make an extension for encrypted files! ( ".enc" )
     QString extension( ".enc" );
     if ( ui->overwriteData->isChecked() )
     {
@@ -554,7 +581,14 @@ MainWindow::ProcessStatus MainWindow::fileProcessing( const QString &f )
 }
 
 /**
- * @brief MainWindow::execute
+ * @brief The helper performs the data encryption / decryption.
+ *
+ * @note In the body of this function, a password is getting for encryption and an additional salt to the password is set.
+ *
+ * @warning Password salt is taken from the release time of the program, taken in microseconds.
+ *  Therefore, different editions of the program will not be fully compatible with each other!
+ *  Encoded data from one release will not be decrypted by another release of the program,
+ *  even if the password is known.
  */
 void MainWindow::execute( void )
 {
@@ -612,7 +646,7 @@ void MainWindow::execute( void )
     CryptFileDevice encryptedFile;
     this->encryptFile = &encryptedFile;
     encryptedFile.setPassword( ui->passLine->text().toLatin1() );
-    // TODO
+    //! \todo Password salt is taken from the release time of the program, taken in microseconds.
     encryptedFile.setSalt( __TIME__ );
     encryptedFile.setEncryptionMethod( (ui->aesCrypt->isChecked() ? CryptFileDevice::AesCipher : CryptFileDevice::XorCipher ) );
     QObject::connect(&encryptedFile, SIGNAL(errorMessage(QVariant)),
@@ -692,7 +726,7 @@ void MainWindow::execute( void )
 }
 
 /**
- * @brief MainWindow::editItem
+ * @brief The function of editing an item from the list.
  */
 void MainWindow::editItem( void )
 {
@@ -776,7 +810,7 @@ void MainWindow::editItem( void )
 }
 
 /**
- * @brief MainWindow::deleteItem
+ * @brief The function removes an item from the list.
  */
 void MainWindow::deleteItem( void )
 {
@@ -798,7 +832,12 @@ void MainWindow::deleteItem( void )
 }
 
 /**
- * @brief MainWindow::about
+ * @brief Information about the program.
+ *
+ * - Brief description of features.
+ * - The date and release number of the program.
+ * - Licensing restrictions and distribution of the program.
+ * - Links to third-party libraries.
  */
 void MainWindow::about( void )
 {
@@ -914,7 +953,7 @@ void MainWindow::on_deleteEntry_clicked( void )
  */
 void MainWindow::on_actionContents_triggered( void )
 {
-    //TODO
+    //! \todo Add help for the program!
     qApp->aboutQt();
 }
 
