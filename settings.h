@@ -8,6 +8,11 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @file settings.h
+ *
+ * @brief This file contains the declaration of the structure Settings
+ */
 #ifndef SETTINGS
 #define SETTINGS
 
@@ -19,15 +24,22 @@
 //------------------------------------------------------------------------------
 // Types
 //------------------------------------------------------------------------------
+/**
+ * @struct Settings
+ *
+ * @brief The Settings structure
+ *
+ * The structure contains specific fields for storing logging parameters.
+ */
 struct Settings
 {
-    // path to the ConfigFile (XML)
+    //! Path to the ConfigFile
     QString configFile;
-    // is logging enabled?
+    //! Enables / disables the logging procedure
     bool enableLog;
-    // path to logFile
+    //! Path to the log file
     QString pathToLog;
-    // maximum size of log File (in Kb)
+    //! This field determines the maximum size of the log file (in Kb)
     quint32 maxSizeLog;
 };
 

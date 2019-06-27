@@ -8,6 +8,11 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @file settingsdialog.cpp
+ *
+ * @brief This file contains the definition of methods and interfaces of the SettingsDialog class.
+ */
 
 //------------------------------------------------------------------------------
 // Includes
@@ -22,8 +27,11 @@
 Q_LOGGING_CATEGORY(logSettingsDialog, "settings")
 
 /**
- * @brief SettingsDialog::SettingsDialog
- * @param parent
+ * @brief The constructor of the class SettingsDialog
+ *
+ * Sets default user interface parameters or uses saved values as parameters.
+ *
+ * @param parent of the type QWidget*
  */
 SettingsDialog::SettingsDialog( QWidget *parent ) :
     QDialog( parent ),
@@ -38,7 +46,7 @@ SettingsDialog::SettingsDialog( QWidget *parent ) :
 }
 
 /**
- * @brief SettingsDialog::~SettingsDialog
+ * @brief The destructor of the class SettingsDialog
  */
 SettingsDialog::~SettingsDialog()
 {
@@ -46,8 +54,9 @@ SettingsDialog::~SettingsDialog()
 }
 
 /**
- * @brief SettingsDialog::getSettings
- * @return
+ * @brief get-function for the settings
+ *
+ * @return *currentSettings of the type Settings*
  */
 Settings* SettingsDialog::getSettings( void )
 {

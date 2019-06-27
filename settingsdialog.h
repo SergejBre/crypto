@@ -8,6 +8,11 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @file settingsdialog.h
+ *
+ * @brief This file contains the declaration of the class SettingsDialog
+ */
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
@@ -18,6 +23,14 @@ namespace Ui {
 class SettingsDialog;
 }
 
+/**
+ * @class SettingsDialog
+ *
+ * @brief The SettingsDialog class
+ *
+ *  The SettingsDialog class provides the user with a number of Back-End functions
+ *  that handle user events and reactions to these events.
+ */
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
