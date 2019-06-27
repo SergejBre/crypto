@@ -41,7 +41,7 @@ Q_LOGGING_CATEGORY(logMainWindow, "MainWin")
  *
  * Sets default user interface parameters or uses saved values as parameters.
  *
- * @param parent of the type QWidget*, optional parameter.
+ * @param parent of the type QWidget*
  */
 MainWindow::MainWindow( QWidget *parent ) :
     QMainWindow( parent ),

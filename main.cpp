@@ -19,7 +19,7 @@
 /**
  * @file main.cpp
  *
- * @brief The file contains two important functions, main and logMessageOutput.
+ * @brief The file contains two important functions, main() and logMessageOutput()
  *
  *  The main function executes an instance of a GUI Qt application,
  *  sets it up with the specified special parameters, and installs
