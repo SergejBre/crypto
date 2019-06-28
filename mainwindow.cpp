@@ -900,7 +900,7 @@ void MainWindow::on_actionAbout_crypto_triggered( void )
 }
 
 /**
- * @brief Slot for updating user interface parameters.
+ * @brief Slot for calling the user interface of the system settings.
  */
 void MainWindow::on_actionSettings_triggered( void )
 {
