@@ -64,30 +64,36 @@ Settings* SettingsDialog::getSettings( void )
 }
 
 /**
- * @brief SettingsDialog::updateSettings
+ * @brief The updateSettings function.
+ *
+ * This function updates the settings from the user interface in the Settings.
  */
 void SettingsDialog::updateSettings( void )
 {
-    // TODO
+    //! @todo Alternative method to set default data!
     this->currentSettings.enableLog = ui->enableLog->isChecked();
     this->currentSettings.pathToLog = ui->logFile->text();
     this->currentSettings.maxSizeLog = ui->maxSizeLog->text().toULong();
 }
 
 /**
- * @brief SettingsDialog::fillSettings
+ * @brief The fillSettings function.
+ *
+ * @note Filling data from the configuration file. Alternative approach. Now it is disabled.
  */
 void SettingsDialog::fillSettings( void )
 {
-    // TODO
+    //! @todo The method of checking and reading from the configuration file.
 }
 
 /**
- * @brief SettingsDialog::fillSettingsUi
+ * @brief The fillSettingsUi function.
+ *
+ * The function fills the Ui parameters that it takes from the Settings.
  */
 void SettingsDialog::fillSettingsUi( void )
 {
-    // TODO
+    //! @todo Validation method for configuration data.
     ui->enableLog->setChecked( currentSettings.enableLog );
     ui->logFile->setText( currentSettings.pathToLog );
     ui->logFile->setEnabled( currentSettings.enableLog );
@@ -106,22 +112,32 @@ void SettingsDialog::fillSettingsUi( void )
 }
 
 /**
- * @brief SettingsDialog::on_buttonBox_accepted
+ * @brief Slot on_buttonBox_accepted for confirmation and acceptance of changes in settings.
  */
 void SettingsDialog::on_buttonBox_accepted( void )
 {
+    if ( !ui->enableLog->isChecked() && currentSettings.enableLog )
+    {
+        qInfo( logSettingsDialog ) << "logging disabled";
+    }
+    else if ( ui->enableLog->isChecked() && !currentSettings.enableLog )
+    {
+        qInfo( logSettingsDialog ) << "logging enabled";
+    }
     this->updateSettings();
     this->hide();
 }
 
 /**
- * @brief SettingsDialog::on_enableLog_clicked
- * @param checked
+ * @brief The on_enableLog_clicked slot for controlling user interface parameters.
+ *
+ * The other setting parameters are then hidden.
+ *
+ * @param checked of type bool. Checks whether logging is enabled.
  */
 void SettingsDialog::on_enableLog_clicked( bool checked )
 {
     ui->logFile->setEnabled( checked );
     ui->logBrowser->setEnabled( checked );
     ui->maxSizeLog->setEnabled( checked );
-    qInfo( logSettingsDialog ) << "Enabled Logging: " << checked;
 }
