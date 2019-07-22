@@ -8,6 +8,11 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @file cryptfiledevice.cpp
+ *
+ * @brief This file contains the definition of methods and interfaces of the CryptFileDevice class.
+ */
 
 //------------------------------------------------------------------------------
 // Includes
@@ -24,16 +29,32 @@
 //------------------------------------------------------------------------------
 // Types
 //------------------------------------------------------------------------------
+/// file header size. in bytes
 static int const kHeaderLength = 128;
 static int const kSaltMaxLength = 8;
 Q_LOGGING_CATEGORY(cryptFileDev, "CryptDev")
 
+/**
+ * @brief The default constructor of the class CryptFileDevice
+ *
+ * The constructor sets default I/O interface parameters.
+ *
+ * @param parent of the type QObject*, sets a parent
+ */
 CryptFileDevice::CryptFileDevice( QObject *parent ) :
     QIODevice( parent )
 {
 
 }
 
+/**
+ * @brief The constructor of the class CryptFileDevice
+ *
+ * The constructor accepts a read/write device as a parameter.
+ *
+ * @param device of the type QFileDevice*, a read/write device
+ * @param parent of the type QObject*, sets a parent
+ */
 CryptFileDevice::CryptFileDevice( QFileDevice *device, QObject *parent ) :
     QIODevice( parent ),
     m_device( device ),
@@ -42,6 +63,16 @@ CryptFileDevice::CryptFileDevice( QFileDevice *device, QObject *parent ) :
 
 }
 
+/**
+ * @brief The constructor of the class CryptFileDevice
+ *
+ * The constructor accepts a read/write device as a parameter, as well as a password and a salt.
+ *
+ * @param device of the type QFileDevice*, a read/write device
+ * @param password of the type QByteArray &, sets a password
+ * @param salt of the type QByteArray &, sets a salt
+ * @param parent of the type QObject*, sets a parent
+ */
 CryptFileDevice::CryptFileDevice( QFileDevice *device,
                                   const QByteArray &password,
                                   const QByteArray &salt,
@@ -56,6 +87,16 @@ CryptFileDevice::CryptFileDevice( QFileDevice *device,
 
 }
 
+/**
+ * @brief The constructor of the class CryptFileDevice
+ *
+ * The constructor accepts a name of the file as a parameter, as well as a password and a salt.
+ *
+ * @param fileName of the type QString &, name of the file
+ * @param password of the type QByteArray &, sets a password
+ * @param salt of the type QByteArray &, sets a salt
+ * @param parent of the type QObject*, sets a parent
+ */
 CryptFileDevice::CryptFileDevice( const QString &fileName,
                                   const QByteArray &password,
                                   const QByteArray &salt,
@@ -70,6 +111,9 @@ CryptFileDevice::CryptFileDevice( const QString &fileName,
 
 }
 
+/**
+ * @brief CryptFileDevice::~CryptFileDevice
+ */
 CryptFileDevice::~CryptFileDevice()
 {
     this->close();

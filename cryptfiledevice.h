@@ -72,7 +72,12 @@ struct CtrState
  * .
  * The class has an implementation of two types of constructors.
  * One of them works with a pointer to objects of type QFileDevice,
- * the other takes as a parameter a reference to the file name.
+ * the other accepts as a parameter a reference to the file name.
+ *
+ * The standard encryption mechanism encrypts data block by block.
+ * Therefore, an additional buffer is used for blocks.
+ * When reserving a buffer, availability will be checked.
+ * If there is not enough space, an error message will appear.
  *
  * The class also has other important functionality.
  * The methods of the class CryptFileDevice::insertHeader and CryptFileDevice::tryParseHeader allow you
