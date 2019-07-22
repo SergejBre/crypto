@@ -112,7 +112,7 @@ CryptFileDevice::CryptFileDevice( const QString &fileName,
 }
 
 /**
- * @brief CryptFileDevice::~CryptFileDevice
+ * @brief The destructor of the class CryptFileDevice
  */
 CryptFileDevice::~CryptFileDevice()
 {
@@ -125,8 +125,8 @@ CryptFileDevice::~CryptFileDevice()
 }
 
 /**
- * @brief CryptFileDevice::setPassword
- * @param password
+ * @brief set-function for the Password
+ * @param password of the type QByteArray &
  */
 void CryptFileDevice::setPassword( const QByteArray &password )
 {
@@ -134,8 +134,8 @@ void CryptFileDevice::setPassword( const QByteArray &password )
 }
 
 /**
- * @brief CryptFileDevice::setSalt
- * @param salt
+ * @brief set-function for the Salt
+ * @param salt of the type QByteArray &
  */
 void CryptFileDevice::setSalt( const QByteArray &salt )
 {
@@ -143,17 +143,17 @@ void CryptFileDevice::setSalt( const QByteArray &salt )
 }
 
 /**
- * @brief CryptFileDevice::setKeyLength
- * @param keyLength
+ * @brief set-function for the keyLength
+ * @param keyLength of the type CryptFileDevice::AesKeyLength
  */
-void CryptFileDevice::setKeyLength( AesKeyLength keyLength )
+void CryptFileDevice::setKeyLength( CryptFileDevice::AesKeyLength keyLength )
 {
     m_aesKeyLength = keyLength;
 }
 
 /**
- * @brief CryptFileDevice::setNumRounds
- * @param numRounds
+ * @brief set-function for the numRounds
+ * @param numRounds of the type int
  */
 void CryptFileDevice::setNumRounds( int numRounds )
 {
@@ -161,8 +161,8 @@ void CryptFileDevice::setNumRounds( int numRounds )
 }
 
 /**
- * @brief CryptFileDevice::setEncryptionMethod
- * @param enc
+ * @brief set-function for the encryptionMethod
+ * @param enc of the type CryptFileDevice::EncryptionMethod
  */
 void CryptFileDevice::setEncryptionMethod(CryptFileDevice::EncryptionMethod enc)
 {
@@ -171,8 +171,13 @@ void CryptFileDevice::setEncryptionMethod(CryptFileDevice::EncryptionMethod enc)
 
 /**
  * @brief CryptFileDevice::open
- * @param mode
- * @return
+ *
+ * Opens the device and sets its OpenMode to mode.
+ * Returns true if successful; otherwise returns false.
+ *
+ * @param mode of the flags QIODevice::OpenMode (ReadOnly, WriteOnly, ReadWrite, etc)
+ * @retval true if successful,
+ * @retval false otherwise.
  */
 bool CryptFileDevice::open( OpenMode mode )
 {
@@ -267,6 +272,12 @@ bool CryptFileDevice::open( OpenMode mode )
 
 /**
  * @brief CryptFileDevice::insertHeader
+ *
+ * The method CryptFileDevice::insertHeader allow you to provide the files
+ * being encoded with a special 1024 bit header (variable kHeaderLength).
+ * Which contains AES encryption options, as well as a hash of the sum of the password and salt.
+ *
+ * @note In the next version, the header of the encrypted file will be backed up with a CRC checksum.
  */
 void CryptFileDevice::insertHeader( void )
 {
@@ -286,7 +297,15 @@ void CryptFileDevice::insertHeader( void )
 
 /**
  * @brief CryptFileDevice::tryParseHeader
- * @return
+ *
+ * The CryptFileDevice::tryParseHeader method parses the special 1024-bit header
+ * (kHeaderLength variable). This will allow you to look up the special AES encryption
+ * options as well as a hash of the sum of password and salt.
+ *
+ * @note In the next version, the header of the encrypted file will be backed up with a CRC checksum.
+ *
+ * @retval true if parse successful,
+ * @retval false otherwise.
  */
 bool CryptFileDevice::tryParseHeader( void )
 {
@@ -333,6 +352,11 @@ bool CryptFileDevice::tryParseHeader( void )
 
 /**
  * @brief CryptFileDevice::close
+ *
+ * Reimplemented from QIODevice::close().
+ * Calls CryptFileDevice::flush() and closes the file.
+ * Errors from flush are ignored.
+ *
  */
 void CryptFileDevice::close( void )
 {
