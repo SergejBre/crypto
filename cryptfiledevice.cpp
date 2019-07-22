@@ -235,7 +235,7 @@ void CryptFileDevice::insertHeader( void )
     header.append( passwordHash );
     QByteArray saltHash = QCryptographicHash::hash( m_salt, QCryptographicHash::Sha3_256 );
     header.append( saltHash );
-    QByteArray padding( kHeaderLength - header.length(), 0xcd );
+    QByteArray padding( kHeaderLength - header.length(), 0xcd ); // padding with 0xcd
     header.append( padding );
     m_device->write( header );
 }

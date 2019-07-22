@@ -8,6 +8,11 @@
 //  Project: Crypto - Advanced File Encryptor, based on simple XOR and
 //           reliable AES methods
 //------------------------------------------------------------------------------
+/**
+ * @file cryptfiledevice.h
+ *
+ * @brief This file contains the declaration of the class CryptFileDevice
+ */
 #ifndef CRYPTFILEDEVICE_H
 #define CRYPTFILEDEVICE_H
 
@@ -21,6 +26,14 @@
 // Types
 //------------------------------------------------------------------------------
 class QFileDevice;
+
+/**
+ * @struct CtrState
+ *
+ * @brief The CtrState structure
+ *
+ * The structure contains specific fields for the parameters of the AES encryption method.
+ */
 struct CtrState
 {
     unsigned char ivec[AES_BLOCK_SIZE];
@@ -28,18 +41,62 @@ struct CtrState
     unsigned char ecount[AES_BLOCK_SIZE];
 };
 
+/**
+ * @class CryptFileDevice
+ *
+ * @brief The CryptFileDevice class provides an interface for encrypting and decrypting
+ * when reading and accordingly writing to open files.
+ *
+ * An implementation of the CryptFileDevice class replaces the standard interface QFileDevice
+ * for reading and writing to open files. The QFileDevice class is the base class for I/O devices
+ * that can read and write text and binary files and resources. QFile offers the main functionality,
+ * QFileDevice serves as a base class for sharing functionality with other file devices,
+ * by providing all the operations that can be done on files that have been opened by QFile.
+ * The CryptFileDevice class is an overloaded the base class for I/O devices,
+ * inherits from the standard abstract class QIODevice.
+ *
+ * The following virtual methods of QIODevice class must be reimplemented.
+ *
+ * Reimplemented Public Functions:
+ * - CryptFileDevice::open
+ * - CryptFileDevice::close
+ * - CryptFileDevice::size
+ * - CryptFileDevice::atEnd
+ * - CryptFileDevice::bytesAvailable
+ * - CryptFileDevice::pos
+ * - CryptFileDevice::seek
+ * .
+ * Reimplemented Protected Functions:
+ * - CryptFileDevice::readData
+ * - CryptFileDevice::writeData
+ * .
+ * The class has an implementation of two types of constructors.
+ * One of them works with a pointer to objects of type QFileDevice,
+ * the other takes as a parameter a reference to the file name.
+ *
+ * The class also has other important functionality.
+ * The methods of the class CryptFileDevice::insertHeader and CryptFileDevice::tryParseHeader allow you
+ * to provide the files being encoded with a special 1024 bit header (variable kHeaderLength).
+ * Which contains AES encryption options, as well as a hash of the sum
+ * of the password and salt.
+ * In the next version, the header of the encrypted file will be backed up with a CRC checksum.
+ *
+ * @note All functions in this class are reentrant.
+ */
 class CryptFileDevice : public QIODevice
 {
     Q_OBJECT
     Q_DISABLE_COPY( CryptFileDevice )
 
 public:
+    /// Selection of the key length between 128, 192, 256 bits.
     enum AesKeyLength
     {
         kAesKeyLength128,
         kAesKeyLength192,
         kAesKeyLength256
     };
+    /// Selection of the encryption method XOR or AES.
     enum EncryptionMethod
     {
         XorCipher,
