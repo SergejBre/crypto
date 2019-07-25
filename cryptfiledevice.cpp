@@ -287,18 +287,14 @@ bool CryptFileDevice::open( OpenMode mode )
  */
 void CryptFileDevice::insertHeader( void )
 {
-    QByteArray header;
-    header.append( 0xcd ); // cryptdevice byte
-    header.append( 0x01 ); // version
-    header.append((char *)&m_aesKeyLength, 4 ); // aes key length
-    header.append((char *)&m_numRounds, 4 ); // iteration count to use
-    QByteArray passwordHash = QCryptographicHash::hash( m_password, QCryptographicHash::Sha3_256 );
-    header.append( passwordHash );
-    QByteArray saltHash = QCryptographicHash::hash( m_salt, QCryptographicHash::Sha3_256 );
-    header.append( saltHash );
-    QByteArray padding( kHeaderLength - header.length(), 0xcd ); // padding with 0xcd
-    header.append( padding );
-    m_device->write( header );
+    QDataStream ostream( m_device );
+    ostream << quint8( 0xcd ); // cryptdevice byte
+    ostream << quint8( 0x01 ); // version
+    ostream << static_cast<quint32>( m_aesKeyLength ); // aes key length
+    ostream << static_cast<qint32>( m_numRounds ); // iteration count to use
+    ostream.writeRawData( QCryptographicHash::hash( m_password, QCryptographicHash::Sha3_256 ), kHashLength );
+    ostream.writeRawData( QCryptographicHash::hash( m_salt, QCryptographicHash::Sha3_256 ), kHashLength );
+    ostream.writeRawData( QByteArray( kPaddingLength, char( 0xcd ) ), kPaddingLength ); // padding with 0xcd
 }
 
 /**
