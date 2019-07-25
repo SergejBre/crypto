@@ -31,6 +31,7 @@
 //------------------------------------------------------------------------------
 /// file header size. in bytes
 static int const kHeaderLength = 128;
+/// restriction on the length of the salt.
 static int const kSaltMaxLength = 8;
 Q_LOGGING_CATEGORY(cryptFileDev, "CryptDev")
 
@@ -355,8 +356,11 @@ bool CryptFileDevice::tryParseHeader( void )
  *
  * Reimplemented from QIODevice::close().
  * Calls CryptFileDevice::flush() and closes the file.
- * Errors from flush are ignored.
  *
+ * First emits aboutToClose(), then closes the device and sets its OpenMode to NotOpen.
+ * The error string is also reset.
+ *
+ * @note Errors from flush are ignored.
  */
 void CryptFileDevice::close( void )
 {
@@ -381,8 +385,9 @@ void CryptFileDevice::close( void )
 }
 
 /**
- * @brief CryptFileDevice::setFileName
- * @param fileName
+ * @brief set-function for the fileName
+ *
+ * @param fileName of the type QString &
  */
 void CryptFileDevice::setFileName( const QString &fileName )
 {
@@ -399,8 +404,9 @@ void CryptFileDevice::setFileName( const QString &fileName )
 }
 
 /**
- * @brief CryptFileDevice::fileName
- * @return
+ * @brief get-function for the fileName
+ *
+ * @return fileName of the type QString
  */
 QString CryptFileDevice::fileName( void ) const
 {
@@ -413,8 +419,9 @@ QString CryptFileDevice::fileName( void ) const
 }
 
 /**
- * @brief CryptFileDevice::setFileDevice
- * @param device
+ * @brief set-function for the fileDevice
+ *
+ * @param device of the type QFileDevice*
  */
 void CryptFileDevice::setFileDevice( QFileDevice *device )
 {
@@ -432,7 +439,12 @@ void CryptFileDevice::setFileDevice( QFileDevice *device )
 
 /**
  * @brief CryptFileDevice::flush
- * @return
+ *
+ * Flushes any buffered data to the file.
+ * Returns true if successful; otherwise returns false.
+ *
+ * @retval true if successful;
+ * @retval false otherwise.
  */
 bool CryptFileDevice::flush( void )
 {
@@ -441,7 +453,11 @@ bool CryptFileDevice::flush( void )
 
 /**
  * @brief CryptFileDevice::isEncrypted
- * @return
+ *
+ * Returns whether the open file is encrypted.
+ *
+ * @retval true if encrypted;
+ * @retval false otherwise.
  */
 bool CryptFileDevice::isEncrypted( void ) const
 {
@@ -450,9 +466,13 @@ bool CryptFileDevice::isEncrypted( void ) const
 
 /**
  * @brief CryptFileDevice::readBlock
- * @param len
- * @param block
- * @return
+ *
+ * Reads from the open file into a buffer of length len.
+ *
+ * @param len the length of the block
+ * @param block a Reference to array of bytes
+ *
+ * @return readBytes Number of bytes read
  */
 qint64 CryptFileDevice::readBlock( qint64 len, QByteArray &block )
 {
@@ -483,9 +503,25 @@ qint64 CryptFileDevice::readBlock( qint64 len, QByteArray &block )
 
 /**
  * @brief CryptFileDevice::readData
- * @param data
- * @param len
- * @return
+ *
+ * Reimplemented from QIODevice::readData()
+ *
+ * Reads up to len bytes from the device into data,
+ * and returns the number of bytes read or -1 if an error occurred.
+ *
+ * @note
+ * - When reimplementing this function it is important that this function
+ * reads all the required data before returning.
+ * This is required in order for QDataStream to be able to operate on the class.
+ * QDataStream assumes all the requested information was read and
+ * therefore does not retry reading if there was a problem.
+ * - This function might be called with a len of 0,
+ * which can be used to perform post-reading operations.
+ *
+ * @param data of the type char*
+ * @param len the length of the data
+ *
+ * @return the number of bytes read or -1 if an error occurred.
  */
 qint64 CryptFileDevice::readData( char *data, qint64 len )
 {
@@ -525,9 +561,21 @@ qint64 CryptFileDevice::readData( char *data, qint64 len )
 
 /**
  * @brief CryptFileDevice::writeData
- * @param data
- * @param length
- * @return
+ *
+ * Reimplemented from QIODevice::writeData().
+ *
+ * Writes up to length bytes from data to the device.
+ * Returns the number of bytes written, or -1 if an error occurred.
+ *
+ * @note When reimplementing this function it is important that this function
+ * writes all the data available before returning.
+ * This is required in order for QDataStream to be able to operate on the class.
+ * QDataStream assumes all the information was written and therefore does not retry
+ * writing if there was a problem.
+ *
+ * @param data of the type char*
+ * @param length the length of the data
+ * @return the number of bytes written, or -1 if an error occurred.
  */
 qint64 CryptFileDevice::writeData( const char *data, qint64 length )
 {
@@ -553,8 +601,12 @@ qint64 CryptFileDevice::writeData( const char *data, qint64 length )
 
 /**
  * @brief CryptFileDevice::initCtr
- * @param state
- * @param iv
+ *
+ * Initializes specific parameters for AES encoding.
+ * And ends up calling the AES_encrypt(prevIvec, ecount, aesKey) constructor.
+ *
+ * @param state of the type CtrState*
+ * @param iv of the type unsigned char*
  */
 void CryptFileDevice::initCtr( CtrState *state, const unsigned char *iv )
 {
@@ -732,7 +784,17 @@ char *CryptFileDevice::decrypt( const char *cipherText, qint64 len )
 
 /**
  * @brief CryptFileDevice::atEnd
- * @return
+ *
+ * Returns true if the current read and write position is at the end of the device
+ * (i.e. there is no more data available for reading on the device);
+ * otherwise returns false.
+ *
+ * @retval true if the current read and write position is at the end of the device;
+ * @retval false otherwise.
+ *
+ * @warning For some devices, atEnd() can return true even though there is more data to read.
+ * This special case only applies to devices that generate data in direct response to you calling read()
+ * (e.g., /dev or /proc files on Unix and OS X, or console input / stdin on all platforms).
  */
 bool CryptFileDevice::atEnd( void ) const
 {
@@ -741,7 +803,20 @@ bool CryptFileDevice::atEnd( void ) const
 
 /**
  * @brief CryptFileDevice::bytesAvailable
- * @return
+ *
+ * Returns the number of bytes that are available for reading.
+ * This function is commonly used with sequential devices to determine the number of bytes to allocate in a buffer before reading.
+ *
+ * @note Subclasses that reimplement this function must call the base implementation in order to include the size of the buffer of QIODevice.
+ * Example:
+ * @code
+ * qint64 CustomDevice::bytesAvailable() const
+ * {
+      return buffer.size() + QIODevice::bytesAvailable();
+ * }
+ * @endcode
+ *
+ * @return Returns the number of bytes that are available for reading.
  */
 qint64 CryptFileDevice::bytesAvailable( void ) const
 {
@@ -750,7 +825,16 @@ qint64 CryptFileDevice::bytesAvailable( void ) const
 
 /**
  * @brief CryptFileDevice::pos
- * @return
+ *
+ * For random-access devices, this function returns the position that data is written to or read from.
+ * For sequential devices or closed devices, where there is no concept of a "current position", 0 is returned.
+ *
+ * @note The current read/write position of the device is maintained internally by QIODevice,
+ * so reimplementing this function is not necessary.
+ * When subclassing QIODevice, use QIODevice::seek() to notify QIODevice about changes in the device position.
+ *
+ * @return returns the position that data is written to or read from.
+ * For sequential devices or closed devices, where there is no concept of a "current position", 0 is returned.
  */
 qint64 CryptFileDevice::pos( void ) const
 {
@@ -759,8 +843,23 @@ qint64 CryptFileDevice::pos( void ) const
 
 /**
  * @brief CryptFileDevice::seek
- * @param pos
- * @return
+ *
+ * For random-access devices, this function sets the current position to pos,
+ * returning true on success, or false if an error occurred. For sequential devices,
+ * the default behavior is to produce a warning and return false.
+ *
+ * Do not forget that you need to take into account the header of the encoded file.
+ * The size of which is stored in the constant kHeaderLength.
+ *
+ * @note Seeking beyond the end of a file:
+ * If the position is beyond the end of a file, then seek() will not immediately extend the file.
+ * If a write is performed at this position, then the file will be extended.
+ * The content of the file between the previous end of file and
+ * the newly written data is UNDEFINED and varies between platforms and file systems.
+ *
+ * @param pos of the type qint64
+ * @retval true if success,
+ * @retval false if an error occurred.
  */
 bool CryptFileDevice::seek( qint64 pos )
 {
@@ -780,7 +879,21 @@ bool CryptFileDevice::seek( qint64 pos )
 
 /**
  * @brief CryptFileDevice::size
- * @return
+ *
+ * Reimplemented from QIODevice::size().
+ *
+ * For open random-access devices, this function returns the size of the device.
+ * For open sequential devices, bytesAvailable() is returned.
+
+ * If the device is closed, the size returned will not reflect the actual size of the device.
+ *
+ * @note For regular empty files on Unix (e.g. those in /proc), this function returns 0;
+ * the contents of such a file are generated on demand in response to you calling read().
+ *
+ * @note Do not forget that you need to take into account the header of the encoded file.
+ * The size of which is stored in the constant kHeaderLength.
+ *
+ * @return the size of the file.
  */
 qint64 CryptFileDevice::size( void ) const
 {
@@ -799,7 +912,14 @@ qint64 CryptFileDevice::size( void ) const
 
 /**
  * @brief CryptFileDevice::remove
- * @return
+ *
+ * Removes the file specified by fileName(). Returns true if successful;
+ * otherwise returns false.
+ *
+ * @note The file is closed before it is removed.
+ *
+ * @retval true if successful;
+ * @retval false otherwise.
  */
 bool CryptFileDevice::remove( void )
 {
@@ -830,7 +950,13 @@ bool CryptFileDevice::remove( void )
 
 /**
  * @brief CryptFileDevice::exists
- * @return
+ *
+ * This is an overloaded function.
+ *
+ * Returns true if the file specified by fileName() exists; otherwise returns false.
+ *
+ * @retval true if the file specified by fileName() exists;
+ * @retval false otherwise.
  */
 bool CryptFileDevice::exists( void ) const
 {
@@ -850,8 +976,22 @@ bool CryptFileDevice::exists( void ) const
 
 /**
  * @brief CryptFileDevice::rename
- * @param newName
- * @return
+ *
+ * Renames the file currently specified by fileName() to newName.
+ * Returns true if successful; otherwise returns false.
+ *
+ * @note
+ * - If a file with the name newName already exists, rename() returns false
+ * (i.e., QFile will not overwrite it).
+ * - The file is closed before it is renamed.
+ * - If the rename operation fails, Qt will attempt to copy this file's contents to newName,
+ * and then remove this file, keeping only newName.
+ * If that copy operation fails or this file can't be removed,
+ * the destination file newName is removed to restore the old state.
+ *
+ * @param newName of type QString &
+ * @retval true if successful;
+ * @retval false otherwise.
  */
 bool CryptFileDevice::rename( const QString &newName )
 {
