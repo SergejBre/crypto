@@ -95,7 +95,7 @@ class CryptFileDevice : public QIODevice
 
 public:
     /// Selection of the key length between 128, 192, 256 bits.
-    enum AesKeyLength
+    enum class AesKeyLength : quint32
     {
         kAesKeyLength128,
         kAesKeyLength192,
@@ -118,10 +118,10 @@ public:
                               const QByteArray &password,
                               const QByteArray &salt,
                               QObject *parent = 0 );
-    ~CryptFileDevice();
+    ~CryptFileDevice() override;
 
-    bool open( OpenMode flags );
-    void close( void );
+    bool open( OpenMode flags ) override;
+    void close( void ) override;
 
     void setFileName( const QString &fileName );
     QString fileName( void ) const;
@@ -135,12 +135,12 @@ public:
     void setEncryptionMethod( EncryptionMethod enc );
 
     bool isEncrypted( void ) const;
-    qint64 size( void ) const;
+    qint64 size( void ) const override;
 
-    bool atEnd( void ) const;
-    qint64 bytesAvailable( void ) const;
-    qint64 pos( void ) const;
-    bool seek( qint64 pos );
+    bool atEnd( void ) const override;
+    qint64 bytesAvailable( void ) const override;
+    qint64 pos( void ) const override;
+    bool seek( qint64 pos ) override;
     bool flush( void );
     bool remove( void );
     bool exists( void ) const;
@@ -150,8 +150,8 @@ signals:
     void errorMessage( const QVariant &msg ) const;
 
 protected:
-    qint64 readData( char *data, qint64 length );
-    qint64 writeData( const char *data, qint64 length );
+    qint64 readData( char *data, qint64 length ) override;
+    qint64 writeData( const char *data, qint64 length ) override;
 
     qint64 readBlock( qint64 length, QByteArray &block );
 
@@ -171,11 +171,11 @@ private:
     QByteArray m_password;
     QByteArray m_salt;
     EncryptionMethod m_encMethod;
-    AesKeyLength m_aesKeyLength = kAesKeyLength256;
+    AesKeyLength m_aesKeyLength = AesKeyLength::kAesKeyLength256;
     int m_numRounds = 5;
 
-    CtrState m_ctrState;
-    AES_KEY m_aesKey;
+    CtrState m_ctrState = {};
+    AES_KEY m_aesKey = {};
 };
 
 #endif // CRYPTFILEDEVICE_H

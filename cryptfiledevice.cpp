@@ -21,6 +21,7 @@
 #include <openssl/evp.h>
 #include <limits>
 #include <QtEndian>
+#include <QDataStream>
 #include <QFileDevice>
 #include <QFile>
 #include <QCryptographicHash>
@@ -30,7 +31,11 @@
 // Types
 //------------------------------------------------------------------------------
 /// file header size. in bytes
-static int const kHeaderLength = 128;
+static int const kHeaderLength = 0;
+/// @todo develop the concept of headers for coded files.
+//static int const kHeaderLength = 128;
+static int const kHashLength = 32;
+static int const kPaddingLength = 54;
 /// restriction on the length of the salt.
 static int const kSaltMaxLength = 8;
 Q_LOGGING_CATEGORY(cryptFileDev, "CryptDev")
@@ -58,8 +63,7 @@ CryptFileDevice::CryptFileDevice( QObject *parent ) :
  */
 CryptFileDevice::CryptFileDevice( QFileDevice *device, QObject *parent ) :
     QIODevice( parent ),
-    m_device( device ),
-    m_deviceOwner( false )
+    m_device( device )
 {
 
 }
@@ -80,7 +84,6 @@ CryptFileDevice::CryptFileDevice( QFileDevice *device,
                                   QObject *parent ) :
     QIODevice( parent ),
     m_device( device ),
-    m_deviceOwner( false ),
     m_password( password ),
     m_salt( salt.mid( 0, kSaltMaxLength ) ),
     m_encMethod( AesCipher )
@@ -245,7 +248,9 @@ bool CryptFileDevice::open( OpenMode mode )
 
     m_encrypted = true;
     this->setOpenMode( mode );
-// TODO
+/// @todo develop the concept of headers for coded files.
+/// - Allow the user to assign a header for the files.
+/// - Handle files with and without headers.
     qint64 size = m_device->size();
     if ( size == 0 && mode != ReadOnly )
     {
@@ -310,44 +315,68 @@ void CryptFileDevice::insertHeader( void )
  */
 bool CryptFileDevice::tryParseHeader( void )
 {
-    QByteArray header = m_device->read( kHeaderLength );
-    if ( header.length() != kHeaderLength )
+    QDataStream istream( m_device );
+    quint8 cdByte;
+    istream >> cdByte;
+    if (cdByte != 0xcd)
     {
         return false;
     }
 
-    if ( header.at(0) != (char)0xcd )
+    quint8 version;
+    istream >> version;
+    if ( version != 0x01 )
     {
         return false;
     }
 
-    //int version = header.at(1);
-
-    int aesKeyLength = *(int *)header.mid(2, 4).data();
-    if (aesKeyLength != m_aesKeyLength)
+    quint32 aesKeyLength;
+    istream >> aesKeyLength;
+    if (static_cast<AesKeyLength>(aesKeyLength) != m_aesKeyLength)
+    {
         return false;
+    }
 
-    int numRounds = *(int *)header.mid(6, 4).data();
+    qint32 numRounds;
+    istream >> numRounds;
     if (numRounds != m_numRounds)
+    {
         return false;
+    }
 
-    QByteArray passwordHash = header.mid( 10, 32 );
+    QByteArray hash(kHashLength, '\0');
+    int read = istream.readRawData(hash.data(), kHashLength);
+    if (read != kHashLength)
+    {
+        return false;
+    }
+
     QByteArray expectedPasswordHash = QCryptographicHash::hash( m_password, QCryptographicHash::Sha3_256 );
-    if ( passwordHash != expectedPasswordHash )
+    if (hash != expectedPasswordHash)
     {
         return false;
     }
 
-    QByteArray saltHash = header.mid( 42, 32 );
+    read = istream.readRawData(hash.data(), kHashLength);
+    if (read != kHashLength)
+    {
+        return false;
+    }
+
     QByteArray expectedSaltHash = QCryptographicHash::hash( m_salt, QCryptographicHash::Sha3_256 );
-    if ( saltHash != expectedSaltHash )
+    if (hash != expectedSaltHash)
     {
         return false;
     }
 
-    QByteArray padding = header.mid( 74 );
-    QByteArray expectedPadding( padding.length(), 0xcd );
+    QByteArray padding(kPaddingLength, '\0');
+    read = istream.readRawData(padding.data(), kPaddingLength);
+    if (read != kPaddingLength)
+    {
+        return false;
+    }
 
+    QByteArray expectedPadding(kPaddingLength, char(0xcd));
     return ( padding == expectedPadding );
 }
 
@@ -603,7 +632,7 @@ qint64 CryptFileDevice::writeData( const char *data, qint64 length )
  * @brief CryptFileDevice::initCtr
  *
  * Initializes specific parameters for AES encoding.
- * And ends up calling the AES_encrypt(prevIvec, ecount, aesKey) constructor.
+ * And ends up calling the AES_encrypt(const unsigned char *in, unsigned char *out, const AES_KEY *key) function.
  *
  * @param state of the type CtrState*
  * @param iv of the type unsigned char*
@@ -649,20 +678,48 @@ void CryptFileDevice::initCtr( CtrState *state, const unsigned char *iv )
 
 /**
  * @brief CryptFileDevice::initCipher
- * @return
+ *
+ * This function is required to check the plausibility of the entered keys and parameters.
+ * Prepares the IV from various parameters and calls the OpenSSL library function EVP_BytesToKey().
+ *
+ * int EVP_BytesToKey( const EVP_CIPHER *type,const EVP_MD *md,
+ *                     const unsigned char *salt,
+ *                     const unsigned char *data, int datal, int count,
+ *                     unsigned char *key,unsigned char *iv);
+ *
+ * EVP_BytesToKey() derives a key and IV from various parameters.
+ * - type is the cipher to derive the key and IV for.
+ * - md is the message digest to use.
+ * - The salt parameter is used as a salt in the derivation: it should point to an 8 byte buffer or NULL if no salt is used.
+ * - data is a buffer containing datal bytes which is used to derive the keying data.
+ * - count is the iteration count to use.
+ * - The derived key and IV will be written to key and iv respectively.
+ * .
+ * Return values:
+ * If data is NULL, then EVP_BytesToKey() returns the number of bytes needed to store the derived key.
+ * Otherwise, EVP_BytesToKey() returns the size of the derived key in bytes, or 0 on error.
+ *
+ * @note
+ * - A typical application of this function is to derive keying material for an encryption algorithm from a password in the data parameter.
+ * - Increasing the count parameter slows down the algorithm which makes it harder for an attacker to peform a brute force attack using a large number of candidate passwords.
+ * - If the total key and IV length is less than the digest length and MD5 is used then the derivation algorithm is compatible with PKCS#5 v1.5 otherwise a non standard extension is used to derive the extra data.
+ * - Newer applications should use a more modern algorithm such as PBKDF2 as defined in PKCS#5v2.1 and provided by PKCS5_PBKDF2_HMAC.
+ * .
+ * @retval true if success;
+ * @retval false otherwise.
  */
 bool CryptFileDevice::initCipher( void )
 {
     const EVP_CIPHER *cipher = EVP_enc_null();
-    if ( m_aesKeyLength == kAesKeyLength128 )
+    if ( m_aesKeyLength == AesKeyLength::kAesKeyLength128 )
     {
         cipher = EVP_aes_128_ctr();
     }
-    else if ( m_aesKeyLength == kAesKeyLength192 )
+    else if ( m_aesKeyLength == AesKeyLength::kAesKeyLength192 )
     {
         cipher = EVP_aes_192_ctr();
     }
-    else if ( m_aesKeyLength == kAesKeyLength256 )
+    else if ( m_aesKeyLength == AesKeyLength::kAesKeyLength256 )
     {
         cipher = EVP_aes_256_ctr();
     }
