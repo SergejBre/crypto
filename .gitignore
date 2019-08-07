@@ -88,3 +88,4 @@ cryptod.sh
 crypto.log
 qt.conf
 test/cryptotest
+test/testfile.*
