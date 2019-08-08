@@ -1,6 +1,6 @@
 #include <QString>
 #include <QtTest>
-#include "../../CryptFileDevice/src/cryptfiledevice.h"
+#include "../cryptfiledevice.h"
 #include <QFile>
 #include <QDebug>
 #include <QDateTime>

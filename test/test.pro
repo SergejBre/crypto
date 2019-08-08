@@ -13,8 +13,7 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-#SRCPATH = $$PWD/..
-SRCPATH = $$PWD/../../CryptFileDevice/src
+SRCPATH = $$PWD/..
 
 INCLUDEPATH += $$SRCPATH
 
