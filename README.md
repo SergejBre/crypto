@@ -1,39 +1,47 @@
 # Crypto - Advanced File Encryptor, based on one simple XOR and on a reliable AES encryption method
 ![PROJECT_PHOTO](https://github.com/SergejBre/crypto/blob/master/doc/images/program_screenshot.png)
-* [Description of the Project](#chapter-0)
-* [Project folders](#chapter-1)
-* [Main features](#chapter-2)
-* [Specification](#chapter-3)
-* [System requirements](#chapter-4)
-* [Compilation and installation](#chapter-5)
-* [Further development](#chapter-6)
 
-<a id="chapter-0"></a>
-## Description of the Project
+## Contents
+* [About the Project](#About the Project)
+* [Project folders](#Project folders)
+* [Main features](#Main features)
+* [Specification](#Specification)
+* [System requirements](#System requirements)
+* [Compilation and installation](#Compilation and installation)
+* [Further development](#Further development)
+
+## About the Project
 ![SCHEME](https://github.com/SergejBre/crypto/blob/master/doc/images/program_screenshot2.png)
 TODO
 
-<a id="chapter-1"></a>
+[:arrow_up:Contents](#Contents)
+____
 ## Project folders
 TODO
 
-<a id="chapter-2"></a>
+[:arrow_up:Contents](#Contents)
+____
 ## Main features
 TODO
 
-<a id="chapter-3"></a>
+[:arrow_up:Contents](#Contents)
+____
 ## Specification
 TODO
 
-<a id="chapter-4"></a>
+[:arrow_up:Contents](#Contents)
+____
 ## System requirements
 TODO
 
-<a id="chapter-5"></a>
+[:arrow_up:Contents](#Contents)
+____
 ## Compilation and installation
 Here is a link to the installation program for Windows XP, Vista, 7, 8, 8.1 [crypto-setup.zip](https://github.com/SergejBre/crypto/releases/download/1.0.1.0/crypto-setup.zip)
 
-<a id="chapter-6"></a>
+[:arrow_up:Contents](#Contents)
+____
 ## Further development
 TODO
 
+[:arrow_up:Contents](#Contents)
