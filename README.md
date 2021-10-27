@@ -7,7 +7,7 @@
 		<img alt="Platform Win32" src="https://img.shields.io/badge/platform-Win32-green"/>
 	</a>
 	<a href="https://github.com/SergejBre/crypto/releases">
-		<img alt="releases page" src="https://img.shields.io/github/v/release/SergejBre/crypto"/>
+		<img alt="releases page" src="https://img.shields.io/github/v/release/SergejBre/crypto?include_prereleases"/>
 	</a>
 	<a href="https://github.com/SergejBre/crypto/releases">
 		<img alt="Github All Releases" src="https://img.shields.io/github/downloads/SergejBre/crypto/total"/>
@@ -17,7 +17,7 @@
 	</a>
 </p>
 
-![PROJECT_PHOTO](./images/program_screenshot.png)
+![PROJECT_PHOTO](./doc/images/program_screenshot.png)
 ____
 
 ## Contents
@@ -32,7 +32,7 @@ ____
 ____
 
 ## About the Project
-![SCHEME](./images/program_screenshot2.png)
+![SCHEME](./doc/images/program_screenshot2.png)
 TODO
 
 [:arrow_up:Top](#Contents)
