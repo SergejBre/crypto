@@ -15,6 +15,9 @@
 	<a href="https://github.com/SergejBre/crypto/issues">
 		<img alt="Issues" src="https://img.shields.io/github/issues/SergejBre/crypto"/>
 	</a>
+	<a href="https://github.com/SergejBre/crypto/blob/master/LICENSE">
+		<img alt="License" src="https://img.shields.io/github/license/SergejBre/crypto"/>
+	</a>
 </p>
 
 ![PROJECT_PHOTO](./doc/images/program_screenshot.png)
@@ -35,46 +38,44 @@ ____
 ![SCHEME](./doc/images/program_screenshot2.png)
 TODO
 
-[:arrow_up:Top](#Contents)
+[![Top](https://img.shields.io/badge/back%20to%20top-%E2%86%A9-blue)](#Contents)
 ____
 
 ## Project folders
 TODO
 
-[:arrow_up:Top](#Contents)
+[![Top](https://img.shields.io/badge/back%20to%20top-%E2%86%A9-blue)](#Contents)
 ____
 
 ## Main features
 TODO
 
-[:arrow_up:Top](#Contents)
+[![Top](https://img.shields.io/badge/back%20to%20top-%E2%86%A9-blue)](#Contents)
 ____
 
 ## Specification
 TODO
 
-[:arrow_up:Top](#Contents)
+[![Top](https://img.shields.io/badge/back%20to%20top-%E2%86%A9-blue)](#Contents)
 ____
 
 ## System requirements
 TODO
 
-[:arrow_up:Top](#Contents)
+[![Top](https://img.shields.io/badge/back%20to%20top-%E2%86%A9-blue)](#Contents)
 ____
 
 ## Compilation and installation
 Here is a link to the installation program for Windows XP, Vista, 7, 8, 8.1 [crypto-setup.zip](https://github.com/SergejBre/crypto/releases/download/1.0.1.0/crypto-setup.zip)
 
-[:arrow_up:Top](#Contents)
+[![Top](https://img.shields.io/badge/back%20to%20top-%E2%86%A9-blue)](#Contents)
 ____
 
 ## Further development
 TODO
 
-[:arrow_up:Top](#Contents)
+[![Top](https://img.shields.io/badge/back%20to%20top-%E2%86%A9-blue)](#Contents)
 ____
 
 ## License
-Crypto is licensed under [![MIT](https://img.shields.io/github/license/SergejBre/crypto.svg)](LICENSE)
-
-[:arrow_up:Top](#Contents)
+[![MIT](https://img.shields.io/github/license/SergejBre/crypto)](LICENSE)
